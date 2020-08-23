@@ -33,7 +33,7 @@ class _GroceryListHome extends State<MyHomePage> {
       NumberFormat.currency(locale: "pt_BR", symbol: "R\$");
 
   var _items = [];
-  var _total = 999.0;
+  var _total = 0.0;
 
   void _addItem() {
     setState(() {
@@ -76,8 +76,18 @@ class _GroceryListHome extends State<MyHomePage> {
                   context: context,
                   builder: (buildContext) {
                     return AlertDialog(
-                      title: Text("Price"),
-                      content: Text("Price"),
+                      content: Row(children: <Widget>[
+                        Expanded(
+                          child: TextField(
+                            keyboardType: TextInputType.numberWithOptions(
+                                signed: false, decimal: true),
+                            autofocus: true,
+                            decoration: new InputDecoration(
+                              labelText: 'Valor',
+                            ),
+                          ),
+                        ),
+                      ]),
                       actions: <Widget>[
                         FlatButton(
                           onPressed: () => Navigator.of(context).pop(true),
