@@ -1,0 +1,8 @@
+- [ ] Add a new item
+  - [ ] Get item name from input
+- [ ] Get item cost on dismiss
+- [ ] Show purchased items in another list
+- [X] Make list items dismissible
+  - [X] Remove item from list on dismiss
+- [X] Display total cost
+- [X] Position list item at bottom half of the screen
