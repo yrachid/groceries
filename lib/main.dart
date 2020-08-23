@@ -60,18 +60,33 @@ class _GroceryListHome extends State<MyHomePage> {
       itemBuilder: (context, index) {
         final item = _items[index];
         return Dismissible(
-          key: Key(item),
-          background: Container(color: Colors.green),
-          onDismissed: (direction) {
-            setState(() {
-              _items.removeAt(index);
-              _total += 1;
+            key: Key(item),
+            background: Container(color: Colors.green),
+            onDismissed: (direction) {
+              setState(() {
+                _items.removeAt(index);
+                _total += 1;
+              });
+            },
+            child: ListTile(
+              title: Text(item),
+            ),
+            confirmDismiss: (direction) async {
+              return await showDialog(
+                  context: context,
+                  builder: (buildContext) {
+                    return AlertDialog(
+                      title: Text("Price"),
+                      content: Text("Price"),
+                      actions: <Widget>[
+                        FlatButton(
+                          onPressed: () => Navigator.of(context).pop(true),
+                          child: Text("Ok"),
+                        )
+                      ],
+                    );
+                  });
             });
-          },
-          child: ListTile(
-            title: Text(item),
-          ),
-        );
       },
     );
   }
