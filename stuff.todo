@@ -2,6 +2,8 @@
   - [ ] Get item name from input
 - [ ] Get item cost on dismiss
 - [ ] Show purchased items in another list
+- [ ] Share items as plain text
+- [ ] Save items on Sqlite
 - [X] Make list items dismissible
   - [X] Remove item from list on dismiss
 - [X] Display total cost

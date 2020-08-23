@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 void main() {
   runApp(MyApp());
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.green,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'Groceries'),
+      home: MyHomePage(title: 'Compras'),
     );
   }
 }
@@ -28,15 +29,51 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _GroceryListHome extends State<MyHomePage> {
-  var _count = 0;
+  static final _moneyFormat =
+      NumberFormat.currency(locale: "pt_BR", symbol: "R\$");
+
   var _items = [];
   var _total = 999.0;
 
   void _addItem() {
     setState(() {
-      _count++;
-      _items.add("Item $_count");
+      _items.add("Item ${_items.length + 1}");
     });
+  }
+
+  String _formattedTotal() {
+    return _moneyFormat.format(_total);
+  }
+
+  Text _totalDisplay() {
+    return Text(
+      "${_formattedTotal()}",
+      textAlign: TextAlign.center,
+      style: TextStyle(
+          fontSize: 40, fontWeight: FontWeight.bold, color: Colors.green),
+    );
+  }
+
+  ListView _groceryItemsListView() {
+    return ListView.builder(
+      itemCount: _items.length,
+      itemBuilder: (context, index) {
+        final item = _items[index];
+        return Dismissible(
+          key: Key(item),
+          background: Container(color: Colors.green),
+          onDismissed: (direction) {
+            setState(() {
+              _items.removeAt(index);
+              _total += 1;
+            });
+          },
+          child: ListTile(
+            title: Text(item),
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -52,39 +89,12 @@ class _GroceryListHome extends State<MyHomePage> {
           Container(
             width: screenSize.width,
             height: screenSize.height * 0.3,
-            color: Colors.black,
-            child: Center(
-                child: Text(
-              "R\$$_total",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: 40,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
-            )),
+            child: Center(child: _totalDisplay()),
           ),
           Container(
               width: screenSize.width,
               height: screenSize.height * 0.5,
-              child: ListView.builder(
-                itemCount: _items.length,
-                itemBuilder: (context, index) {
-                  final item = _items[index];
-                  return Dismissible(
-                    key: Key(item),
-                    background: Container(color: Colors.lightGreen),
-                    onDismissed: (direction) {
-                      setState(() {
-                        _items.removeAt(index);
-                        _total += 1;
-                      });
-                    },
-                    child: ListTile(
-                      title: Text(item),
-                    ),
-                  );
-                },
-              )),
+              child: _groceryItemsListView()),
         ],
       ),
       floatingActionButton: FloatingActionButton(
