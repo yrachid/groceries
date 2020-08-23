@@ -32,12 +32,43 @@ class _GroceryListHome extends State<MyHomePage> {
   static final _moneyFormat =
       NumberFormat.currency(locale: "pt_BR", symbol: "R\$");
 
+  static const _initialItemMultiplier = "1";
+  final _priceInputController = TextEditingController();
+  final _itemMultiplierController = TextEditingController(text: _initialItemMultiplier);
+  final _itemNameController = TextEditingController();
+
   var _items = [];
   var _total = 0.0;
 
-  void _addItem() {
+  void _addItem() async {
+    await showDialog(
+        context: context,
+        builder: (buildContext) {
+          return AlertDialog(
+            content: Row(children: <Widget>[
+              Expanded(
+                child: TextField(
+                  controller: _itemNameController,
+                  keyboardType: TextInputType.name,
+                  autofocus: true,
+                  decoration: new InputDecoration(
+                    labelText: 'Nome do item',
+                  ),
+                ),
+              ),
+            ]),
+            actions: <Widget>[
+              FlatButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                child: Text("Ok"),
+              )
+            ],
+          );
+        });
+
     setState(() {
-      _items.add("Item ${_items.length + 1}");
+      _items.add(_itemNameController.text);
+      _itemNameController.clear();
     });
   }
 
@@ -65,25 +96,36 @@ class _GroceryListHome extends State<MyHomePage> {
             onDismissed: (direction) {
               setState(() {
                 _items.removeAt(index);
-                _total += 1;
               });
             },
             child: ListTile(
               title: Text(item),
             ),
             confirmDismiss: (direction) async {
-              return await showDialog(
+              var dialogResult = await showDialog(
                   context: context,
                   builder: (buildContext) {
                     return AlertDialog(
                       content: Row(children: <Widget>[
                         Expanded(
                           child: TextField(
+                            controller: _priceInputController,
                             keyboardType: TextInputType.numberWithOptions(
                                 signed: false, decimal: true),
                             autofocus: true,
                             decoration: new InputDecoration(
-                              labelText: 'Valor',
+                              labelText: 'Valor: $item',
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: TextField(
+                            controller: _itemMultiplierController,
+                            keyboardType: TextInputType.numberWithOptions(
+                                signed: false, decimal: false),
+                            autofocus: true,
+                            decoration: new InputDecoration(
+                              labelText: 'Quantidade:',
                             ),
                           ),
                         ),
@@ -96,6 +138,14 @@ class _GroceryListHome extends State<MyHomePage> {
                       ],
                     );
                   });
+
+              setState(() {
+                _total += double.parse(_priceInputController.text) * int.parse(_itemMultiplierController.text);
+                _priceInputController.clear();
+                _itemMultiplierController.text = _initialItemMultiplier;
+              });
+
+              return dialogResult;
             });
       },
     );
