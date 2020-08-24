@@ -1,9 +1,10 @@
 - [ ] Show purchased items in another list
 - [ ] Share items as plain text
-- [ ] Save items on Sqlite
+- [ ] Persist state in a file
 - [ ] Undo purchase registering
-- [ ] Trim item name input
-- [ ] Show total items
+- [ ] Check whether confirmDismiss logic can be moved into onDismissed
+- [ ] Show active item count
+- [ ] Fix price dialog height
 - [X] Make list items dismissible
   - [X] Remove item from list on dismiss
 - [X] Display total cost
@@ -16,3 +17,6 @@
   - [X] Right to left: Delete item from list
   - [X] Left to right: Register item price
 - [X] Add list tile separator
+- [X] Trim item name input
+- [X] Do not add empty strings in the item list
+- [X] Do not parse price from empty input

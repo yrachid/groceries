@@ -30,15 +30,15 @@ class MyHomePage extends StatefulWidget {
 
 class _GroceryListHome extends State<MyHomePage> {
   static final _moneyFormat =
-      NumberFormat.currency(locale: "pt_BR", symbol: "R\$");
+  NumberFormat.currency(locale: "pt_BR", symbol: "R\$");
   static const _initialItemMultiplier = "1";
   final _unsingnedDecimal =
-      TextInputType.numberWithOptions(signed: false, decimal: true);
+  TextInputType.numberWithOptions(signed: false, decimal: true);
   final _unsingnedInt =
-      TextInputType.numberWithOptions(signed: false, decimal: false);
+  TextInputType.numberWithOptions(signed: false, decimal: false);
   final _priceInputController = TextEditingController();
   final _itemMultiplierController =
-      TextEditingController(text: _initialItemMultiplier);
+  TextEditingController(text: _initialItemMultiplier);
   final _itemNameController = TextEditingController();
 
   var _activeItems = [];
@@ -46,7 +46,9 @@ class _GroceryListHome extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    var screenSize = MediaQuery.of(context).size;
+    var screenSize = MediaQuery
+        .of(context)
+        .size;
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -86,12 +88,16 @@ class _GroceryListHome extends State<MyHomePage> {
         });
 
     setState(() {
-      _activeItems.add(_itemNameController.text);
-      _itemNameController.clear();
+      var itemName = (_itemNameController.text ?? "").trim();
+      if (itemName.isNotEmpty) {
+        _activeItems.add(itemName);
+        _itemNameController.clear();
+      }
     });
   }
 
-  ListView _groceryItemsListView() => ListView.separated(
+  ListView _groceryItemsListView() =>
+      ListView.separated(
         itemCount: _activeItems.length,
         separatorBuilder: (context, index) => Divider(),
         itemBuilder: (context, index) {
@@ -116,52 +122,70 @@ class _GroceryListHome extends State<MyHomePage> {
                     context: context,
                     builder: (buildContext) {
                       return AlertDialog(
-                        content: Row(children: <Widget>[
-                          _itemPriceTextField(item),
-                          _itemAmountTextField(),
-                        ]),
+                        content:
+                        Column(
+                          children: [
+                            Row(children: <Widget>[Text(item)],),
+                            Row(children: <Widget>[
+                              _itemPriceTextField(),
+                              _itemAmountTextField(),
+                            ]),
+                          ],
+                        )
+                        ,
                         actions: <Widget>[_okButton(context)],
                       );
                     });
 
-                setState(() {
-                  _total += double.parse(_priceInputController.text) *
-                      int.parse(_itemMultiplierController.text);
-                  _priceInputController.clear();
-                  _itemMultiplierController.text = _initialItemMultiplier;
-                });
+                var priceAsString = _priceInputController.text ?? "";
+                var multiplierAsString = _itemMultiplierController.text ?? "";
 
-                return dialogResult;
+                if (priceAsString.isNotEmpty && multiplierAsString.isNotEmpty) {
+                  setState(() {
+                    _total += double.parse(priceAsString) *
+                        int.parse(multiplierAsString);
+                    _priceInputController.clear();
+                    _itemMultiplierController.text = _initialItemMultiplier;
+                  });
+                  return dialogResult;
+                }
+
+                return false;
               });
         },
       );
 
-  Container _deleteGroceryDismissBackground(context) => Container(
-      color: Colors.red,
-      child: Align(
-          alignment: Alignment.centerRight,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              SizedBox(
-                width: MediaQuery.of(context).size.width - 100,
-              ),
-              Icon(
-                Icons.delete_sweep,
-                color: Colors.white,
-              ),
-              Text(
-                " Apagar",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w700,
-                ),
-                textAlign: TextAlign.right,
-              ),
-            ],
-          )));
+  Container _deleteGroceryDismissBackground(context) =>
+      Container(
+          color: Colors.red,
+          child: Align(
+              alignment: Alignment.centerRight,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  SizedBox(
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width - 100,
+                  ),
+                  Icon(
+                    Icons.delete_sweep,
+                    color: Colors.white,
+                  ),
+                  Text(
+                    " Apagar",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700,
+                    ),
+                    textAlign: TextAlign.right,
+                  ),
+                ],
+              )));
 
-  Expanded _expandedTextField(controller, label, textType) => Expanded(
+  Expanded _expandedTextField(controller, label, textType) =>
+      Expanded(
         child: TextField(
           controller: controller,
           keyboardType: textType,
@@ -172,47 +196,53 @@ class _GroceryListHome extends State<MyHomePage> {
         ),
       );
 
-  Expanded _itemNameTextField() => _expandedTextField(
-      _itemNameController, 'Nome do item', TextInputType.name);
+  Expanded _itemNameTextField() =>
+      _expandedTextField(
+          _itemNameController, 'Nome do item', TextInputType.name);
 
   String _formattedTotal() => _moneyFormat.format(_total);
 
-  Text _totalDisplay() => Text(
+  Text _totalDisplay() =>
+      Text(
         "${_formattedTotal()}",
         textAlign: TextAlign.center,
         style: TextStyle(
             fontSize: 40, fontWeight: FontWeight.bold, color: Colors.green),
       );
 
-  Container _buyGroceryDismissBackground() => Container(
-      color: Colors.green,
-      child: Align(
-          alignment: Alignment.centerLeft,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Icon(
-                Icons.add_shopping_cart,
-                color: Colors.white,
-              ),
-              Text(
-                " Carrinho",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w700,
-                ),
-                textAlign: TextAlign.right,
-              ),
-            ],
-          )));
+  Container _buyGroceryDismissBackground() =>
+      Container(
+          color: Colors.green,
+          child: Align(
+              alignment: Alignment.centerLeft,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Icon(
+                    Icons.add_shopping_cart,
+                    color: Colors.white,
+                  ),
+                  Text(
+                    " Carrinho",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700,
+                    ),
+                    textAlign: TextAlign.right,
+                  ),
+                ],
+              )));
 
-  Expanded _itemPriceTextField(item) => _expandedTextField(
-      _priceInputController, 'valor $item', _unsingnedDecimal);
+  Expanded _itemPriceTextField() =>
+      _expandedTextField(
+          _priceInputController, 'Preço', _unsingnedDecimal);
 
-  Expanded _itemAmountTextField() => _expandedTextField(
-      _itemMultiplierController, 'Quantidade: ', _unsingnedInt);
+  Expanded _itemAmountTextField() =>
+      _expandedTextField(
+          _itemMultiplierController, 'Quantidade:', _unsingnedInt);
 
-  FlatButton _okButton(BuildContext context) => FlatButton(
+  FlatButton _okButton(BuildContext context) =>
+      FlatButton(
         onPressed: () => Navigator.of(context).pop(true),
         child: Text("Ok"),
       );
