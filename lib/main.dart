@@ -91,23 +91,23 @@ class _GroceryListHome extends State<MyHomePage> {
     });
   }
 
-  ListView _groceryItemsListView() => ListView.builder(
+  ListView _groceryItemsListView() => ListView.separated(
         itemCount: _activeItems.length,
+        separatorBuilder: (context, index) => Divider(),
         itemBuilder: (context, index) {
           final item = _activeItems[index];
           return Dismissible(
               key: Key(item),
-              background: _leftGroceryDismiss(),
+              background: _buyGroceryDismissBackground(),
               secondaryBackground: _deleteGroceryDismissBackground(context),
               onDismissed: (direction) {
                 setState(() {
                   _activeItems.removeAt(index);
                 });
               },
-              child: InkWell(
-                  child: ListTile(
+              child: ListTile(
                 title: Text(item),
-              )),
+              ),
               confirmDismiss: (direction) async {
                 if (direction == DismissDirection.endToStart) {
                   return true;
@@ -144,14 +144,14 @@ class _GroceryListHome extends State<MyHomePage> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               SizedBox(
-                width: 300,
+                width: MediaQuery.of(context).size.width - 100,
               ),
               Icon(
-                Icons.edit,
+                Icons.delete_sweep,
                 color: Colors.white,
               ),
               Text(
-                " Edit",
+                " Apagar",
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w700,
@@ -184,7 +184,27 @@ class _GroceryListHome extends State<MyHomePage> {
             fontSize: 40, fontWeight: FontWeight.bold, color: Colors.green),
       );
 
-  Container _leftGroceryDismiss() => Container(color: Colors.green);
+  Container _buyGroceryDismissBackground() => Container(
+      color: Colors.green,
+      child: Align(
+          alignment: Alignment.centerLeft,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Icon(
+                Icons.add_shopping_cart,
+                color: Colors.white,
+              ),
+              Text(
+                " Carrinho",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w700,
+                ),
+                textAlign: TextAlign.right,
+              ),
+            ],
+          )));
 
   Expanded _itemPriceTextField(item) => _expandedTextField(
       _priceInputController, 'valor $item', _unsingnedDecimal);
