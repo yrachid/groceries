@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:groceries/grocery_list_tile.dart';
+import 'package:groceries/item_name_dialog.dart';
 import 'package:intl/intl.dart';
 
 void main() {
@@ -33,8 +34,6 @@ class _GroceryListHome extends State<MyHomePage> {
   static final _moneyFormat =
       NumberFormat.currency(locale: "pt_BR", symbol: "R\$");
 
-  final _itemNameController = TextEditingController();
-
   var _activeItems = [];
   var _total = 0.0;
 
@@ -60,41 +59,15 @@ class _GroceryListHome extends State<MyHomePage> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _addItem,
+        onPressed: ItemNameDialog.show(
+            context: context,
+            onValidInput: (name) => setState(() {
+                  _activeItems.add(name);
+                })),
         tooltip: 'Add item',
         child: Icon(Icons.add),
       ),
     );
-  }
-
-  void _addItem() async {
-    await showDialog(
-        context: context,
-        builder: (buildContext) {
-          return AlertDialog(
-            content: Row(children: <Widget>[
-              (Expanded(
-                child: TextField(
-                  controller: _itemNameController,
-                  keyboardType: TextInputType.name,
-                  autofocus: true,
-                  decoration: new InputDecoration(
-                    labelText: 'Nome do item',
-                  ),
-                ),
-              )),
-            ]),
-            actions: <Widget>[_okButton(context)],
-          );
-        });
-
-    setState(() {
-      var itemName = (_itemNameController.text ?? "").trim();
-      if (itemName.isNotEmpty) {
-        _activeItems.add(itemName);
-        _itemNameController.clear();
-      }
-    });
   }
 
   ListView _groceryItemsListView() => ListView.separated(
@@ -114,17 +87,10 @@ class _GroceryListHome extends State<MyHomePage> {
         },
       );
 
-  String _formattedTotal() => _moneyFormat.format(_total);
-
   Text _totalDisplay() => Text(
-        "${_formattedTotal()}",
+        "${_moneyFormat.format(_total)}",
         textAlign: TextAlign.center,
         style: TextStyle(
             fontSize: 40, fontWeight: FontWeight.bold, color: Colors.green),
-      );
-
-  FlatButton _okButton(BuildContext context) => FlatButton(
-        onPressed: () => Navigator.of(context).pop(true),
-        child: Text("Ok"),
       );
 }
