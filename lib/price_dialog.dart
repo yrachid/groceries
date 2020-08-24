@@ -2,17 +2,31 @@ import 'package:flutter/material.dart';
 
 class PriceDialog {
   static const _initialItemMultiplier = "1";
-  final _priceInputController = TextEditingController();
-  final _itemMultiplierController =
-      TextEditingController(text: _initialItemMultiplier);
 
-  buildDialog(context, title) => (buildContext) {
+  static show({@required context, @required title}) async {
+    final priceController = TextEditingController();
+    final multiplierController =
+        TextEditingController(text: _initialItemMultiplier);
+
+    await showDialog(
+        context: context,
+        builder: _build(
+            context: context,
+            title: title,
+            priceController: priceController,
+            multiplierController: multiplierController));
+
+    return _getPrice(priceController, multiplierController);
+  }
+
+  static _build({context, title, priceController, multiplierController}) =>
+      (buildContext) {
         return AlertDialog(
           title: Text(title),
           content: Row(children: <Widget>[
             Expanded(
               child: TextField(
-                controller: _priceInputController,
+                controller: priceController,
                 keyboardType: TextInputType.numberWithOptions(
                     signed: false, decimal: true),
                 autofocus: true,
@@ -23,7 +37,7 @@ class PriceDialog {
             ),
             Expanded(
               child: TextField(
-                controller: _itemMultiplierController,
+                controller: multiplierController,
                 keyboardType: TextInputType.number,
                 autofocus: true,
                 decoration: new InputDecoration(
@@ -41,15 +55,12 @@ class PriceDialog {
         );
       };
 
-  _trimmedText(TextEditingController controller) =>
+  static _trimmedText(TextEditingController controller) =>
       (controller.text ?? "").trim();
 
-  getPrice() {
-    var priceAsString = _trimmedText(_priceInputController);
-    var multiplierAsString = _trimmedText(_itemMultiplierController);
-
-    _priceInputController.clear();
-    _itemMultiplierController.text = _initialItemMultiplier;
+  static _getPrice(priceController, multiplierController) {
+    var priceAsString = _trimmedText(priceController);
+    var multiplierAsString = _trimmedText(multiplierController);
 
     return (priceAsString.isEmpty || multiplierAsString.isEmpty)
         ? null

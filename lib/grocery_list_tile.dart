@@ -22,13 +22,7 @@ class GroceryListTileBuilder {
             return true;
           }
 
-          var priceDialog = PriceDialog();
-
-          await showDialog(
-              context: context,
-              builder: priceDialog.buildDialog(context, item));
-
-          var price = priceDialog.getPrice();
+          var price = await PriceDialog.show(context: context, title: item);
 
           if (price != null) {
             onPurchase(price);
@@ -46,18 +40,11 @@ class GroceryListTileBuilder {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              Icon(
-                Icons.add_shopping_cart,
-                color: Colors.white,
-              ),
-              Text(
-                " Carrinho",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w700,
-                ),
-                textAlign: TextAlign.right,
-              ),
+              Icon(Icons.add_shopping_cart, color: Colors.white),
+              Text(" Carrinho ",
+                  textAlign: TextAlign.right,
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.w700))
             ],
           )));
 
@@ -76,7 +63,7 @@ class GroceryListTileBuilder {
                 color: Colors.white,
               ),
               Text(
-                " Apagar",
+                "Apagar ",
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w700,
