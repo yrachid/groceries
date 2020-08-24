@@ -2,6 +2,9 @@
 - [ ] Share items as plain text
 - [ ] Save items on Sqlite
 - [ ] Undo purchase registering
+- [ ] Add operation labels to each dismiss side
+  - [ ] Right to left: Delete item from list
+  - [ ] Left to right: Register item price
 - [X] Make list items dismissible
   - [X] Remove item from list on dismiss
 - [X] Display total cost
@@ -9,3 +12,4 @@
 - [X] Add a new item
   - [X] Get item name from input
 - [X] Get item cost on dismiss
+- [X] Remove item from list without calculating its price
