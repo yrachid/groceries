@@ -1,5 +1,4 @@
 - [ ] Share items as plain text
-- [ ] Persist state in a file
 - [ ] Restore an item from a purchase
 - [ ] Check if there's a Dart linter
 - [ ] Active items as a class instead of string
@@ -27,3 +26,4 @@
 - [X] Store items that were purchased in a separate list
 - [X] Show purchases in a separate list
 - [X] Undo purchase registering
+- [X] Persist state in a file

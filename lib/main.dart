@@ -3,6 +3,7 @@ import 'package:groceries/grocery_event_store.dart';
 import 'package:groceries/grocery_list_tile.dart';
 import 'package:groceries/item_name_dialog.dart';
 import 'package:groceries/purchase_list_tile.dart';
+import 'package:groceries/storage.dart';
 import 'package:intl/intl.dart';
 
 void main() {
@@ -40,34 +41,56 @@ class _GroceryListHome extends State<MyHomePage> {
   int _activeViewIndex = 0;
 
   @override
+  void initState() {
+    super.initState();
+    Storage.restore().then((value) => setState(() {
+          _groceries = value;
+        }));
+  }
+
+  @override
+  void setState(VoidCallback fn) {
+    super.setState(fn);
+    if (_groceries != null) {
+      Storage.save(_groceries);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
-
-    final totalDisplayContainer = Container(
-      width: screenSize.width,
-      height: screenSize.height * 0.3,
-      child: Center(
-        child: _totalDisplay(),
-      ),
-    );
-
-    final listViewContainer = (listView) => Container(
-          width: screenSize.width,
-          height: screenSize.height * 0.5,
-          child: listView,
-        );
 
     final List<Widget> views = <Widget>[
       Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          totalDisplayContainer,
-          listViewContainer(_activeGroceriesListView()),
+          Container(
+            width: screenSize.width,
+            height: screenSize.height * 0.3,
+            child: Center(
+              child: _totalDisplay(),
+            ),
+          ),
+          Container(
+            width: screenSize.width,
+            height: screenSize.height * 0.5,
+            child: _activeGroceriesListView(),
+          ),
         ],
       ),
       Column(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
-        totalDisplayContainer,
-        listViewContainer(_purchasesListView()),
+        Container(
+          width: screenSize.width,
+          height: screenSize.height * 0.3,
+          child: Center(
+            child: _totalDisplay(),
+          ),
+        ),
+        Container(
+          width: screenSize.width,
+          height: screenSize.height * 0.5,
+          child: _purchasesListView(),
+        ),
       ])
     ];
 

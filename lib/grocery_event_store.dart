@@ -1,6 +1,25 @@
 class GroceryEventStore {
-  final List<String> _activeGroceries = [];
-  final List<PurchasedGrocery> _purchasedGroceries = [];
+  final List<String> _activeGroceries;
+  final List<PurchasedGrocery> _purchasedGroceries;
+
+  GroceryEventStore()
+      : _activeGroceries = [],
+        _purchasedGroceries = [];
+
+  GroceryEventStore.fromJson(json)
+      : _activeGroceries = _decodeActiveGroceries(json['active']),
+        _purchasedGroceries = _decodePurchases(json['purchased']);
+
+  static List<String> _decodeActiveGroceries(List<dynamic> groceries) =>
+      groceries.map((e) => e as String).toList();
+
+  static _decodePurchases(List<dynamic> purchases) => purchases
+      .map((e) => e as Map<String, dynamic>)
+      .map((e) => PurchasedGrocery(
+            name: e['name'] as String,
+            price: e['price'] as double,
+          ))
+      .toList();
 
   add(String name) {
     _activeGroceries.add(name);
@@ -54,6 +73,16 @@ class GroceryEventStore {
         .map((e) => e.price)
         .fold(0.0, (value, element) => value + element);
   }
+
+  Map<String, dynamic> toJson() => {
+        'active': _activeGroceries,
+        'purchased': _purchasedGroceries
+            .map((g) => {
+                  'name': g.name,
+                  'price': g.price,
+                })
+            .toList(),
+      };
 }
 
 class PurchasedGrocery {
