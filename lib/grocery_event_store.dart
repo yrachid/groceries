@@ -1,6 +1,6 @@
 class GroceryEventStore {
   final List<String> _activeGroceries = [];
-  final List<_PurchasedGrocery> _purchasedGroceries = [];
+  final List<PurchasedGrocery> _purchasedGroceries = [];
 
   add(String name) {
     _activeGroceries.add(name);
@@ -11,11 +11,19 @@ class GroceryEventStore {
   }
 
   get(int index) {
-    return _activeGroceries[index];
+    return _activeGroceries.elementAt(index);
   }
 
   length() {
     return _activeGroceries.length;
+  }
+
+  purchasesLength() {
+    return _purchasedGroceries.length;
+  }
+
+  getPurchase(int index) {
+    return _purchasedGroceries.elementAt(index);
   }
 
   clearPurchases() {
@@ -25,7 +33,7 @@ class GroceryEventStore {
   purchase(String name, double price) {
     _activeGroceries.remove(name);
     _purchasedGroceries.add(
-      _PurchasedGrocery(
+      PurchasedGrocery(
         name: name,
         price: price,
       ),
@@ -39,9 +47,9 @@ class GroceryEventStore {
   }
 }
 
-class _PurchasedGrocery {
+class PurchasedGrocery {
   final String name;
   final double price;
 
-  _PurchasedGrocery({this.name, this.price});
+  PurchasedGrocery({this.name, this.price});
 }

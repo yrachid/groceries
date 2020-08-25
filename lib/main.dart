@@ -12,12 +12,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Compras',
+      title: 'The Elder Scrolls: Zaffari',
       theme: ThemeData(
         primarySwatch: Colors.green,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'Compras'),
+      home: MyHomePage(title: 'The Elder Scrolls: Zaffari'),
     );
   }
 }
@@ -36,15 +36,14 @@ class _GroceryListHome extends State<MyHomePage> {
       NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
 
   final _groceries = GroceryEventStore();
+  int _activeViewIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Column(
+
+    final List<Widget> views = <Widget>[
+      Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           Container(
@@ -55,11 +54,45 @@ class _GroceryListHome extends State<MyHomePage> {
           Container(
             width: screenSize.width,
             height: screenSize.height * 0.5,
-            child: _groceriesListView(),
+            child: _activeGroceriesListView(),
           ),
         ],
       ),
+      Column(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
+        Container(
+          width: screenSize.width,
+          height: screenSize.height * 0.3,
+          child: Center(child: _totalDisplay()),
+        ),
+        Container(
+          width: screenSize.width,
+          height: screenSize.height * 0.5,
+          child: _purchasesListView(),
+        ),
+      ])
+    ];
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: views.elementAt(_activeViewIndex),
       floatingActionButton: _addItemButton(),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _activeViewIndex,
+        onTap: (index) => setState(() {
+          _activeViewIndex = index;
+        }),
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.list),
+            title: Text('Lista'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.attach_money),
+            title: Text('Compras'),
+          ),
+        ],
+      ),
     );
   }
 
@@ -78,7 +111,7 @@ class _GroceryListHome extends State<MyHomePage> {
         ),
       );
 
-  ListView _groceriesListView() => ListView.separated(
+  ListView _activeGroceriesListView() => ListView.separated(
         itemCount: _groceries.length(),
         separatorBuilder: (context, index) => Divider(),
         itemBuilder: (context, index) {
@@ -92,6 +125,20 @@ class _GroceryListHome extends State<MyHomePage> {
             onDismiss: () => setState(() {
               _groceries.cancel(item);
             }),
+          );
+        },
+      );
+
+  ListView _purchasesListView() => ListView.separated(
+        itemCount: _groceries.purchasesLength(),
+        separatorBuilder: (context, index) => Divider(),
+        itemBuilder: (context, index) {
+          final PurchasedGrocery item = _groceries.getPurchase(index);
+          return GroceryListTileBuilder.build(
+            context: context,
+            item: '${item.name} - ${item.price}',
+            onPurchase: () => print("Purchase"),
+            onDismiss: () => print("Dismiss"),
           );
         },
       );

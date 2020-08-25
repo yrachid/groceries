@@ -25,3 +25,4 @@
 - [X] Fix price dialog height
 - [X] Reset total
 - [X] Store items that were purchased in a separate list
+- [X] Show purchases in a separate list
