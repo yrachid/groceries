@@ -36,42 +36,41 @@ class _GroceryListHome extends State<MyHomePage> {
   static final _moneyFormat =
       NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
 
-  final _groceries = GroceryEventStore();
+  GroceryEventStore _groceries = GroceryEventStore();
   int _activeViewIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
 
+    final totalDisplayContainer = Container(
+      width: screenSize.width,
+      height: screenSize.height * 0.3,
+      child: Center(
+        child: _totalDisplay(),
+      ),
+    );
+
+    final listViewContainer = (listView) => Container(
+          width: screenSize.width,
+          height: screenSize.height * 0.5,
+          child: listView,
+        );
+
     final List<Widget> views = <Widget>[
       Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          Container(
-            width: screenSize.width,
-            height: screenSize.height * 0.3,
-            child: Center(child: _totalDisplay()),
-          ),
-          Container(
-            width: screenSize.width,
-            height: screenSize.height * 0.5,
-            child: _activeGroceriesListView(),
-          ),
+          totalDisplayContainer,
+          listViewContainer(_activeGroceriesListView()),
         ],
       ),
       Column(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
-        Container(
-          width: screenSize.width,
-          height: screenSize.height * 0.3,
-          child: Center(child: _totalDisplay()),
-        ),
-        Container(
-          width: screenSize.width,
-          height: screenSize.height * 0.5,
-          child: _purchasesListView(),
-        ),
+        totalDisplayContainer,
+        listViewContainer(_purchasesListView()),
       ])
     ];
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
