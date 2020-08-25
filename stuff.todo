@@ -1,6 +1,9 @@
 - [ ] Share items as plain text
 - [ ] Persist state in a file
 - [ ] Undo purchase registering
+- [ ] Check if there's a Dart linter
+- [ ] Active items as a class instead of string
+  - [ ] With unique identifier
 - [ ] Show active item count
 - [ ] Store purchased items, total and timestamp
 - [X] Make list items dismissible

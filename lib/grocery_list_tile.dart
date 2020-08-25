@@ -45,7 +45,7 @@ class GroceryListTileBuilder {
                 color: Colors.white,
               ),
               Text(
-                " Carrinho ",
+                ' Carrinho ',
                 textAlign: TextAlign.right,
                 style: TextStyle(
                   color: Colors.white,
@@ -70,7 +70,7 @@ class GroceryListTileBuilder {
                 color: Colors.white,
               ),
               Text(
-                "Apagar ",
+                'Apagar ',
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w700,

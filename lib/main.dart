@@ -33,7 +33,7 @@ class MyHomePage extends StatefulWidget {
 
 class _GroceryListHome extends State<MyHomePage> {
   static final _moneyFormat =
-      NumberFormat.currency(locale: "pt_BR", symbol: "R\$");
+      NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
 
   final _groceries = GroceryEventStore();
 
@@ -68,7 +68,7 @@ class _GroceryListHome extends State<MyHomePage> {
           _groceries.clearPurchases();
         }),
         child: Text(
-          "${_moneyFormat.format(_groceries.total())}",
+          '${_moneyFormat.format(_groceries.total())}',
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 40,

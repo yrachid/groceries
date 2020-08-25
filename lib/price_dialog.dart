@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class PriceDialog {
-  static const _initialItemMultiplier = "1";
+  static const _initialItemMultiplier = '1';
 
   static show({@required context, @required title}) async {
     final priceController = TextEditingController();
@@ -54,14 +54,14 @@ class PriceDialog {
           actions: <Widget>[
             FlatButton(
               onPressed: () => Navigator.of(context).pop(true),
-              child: Text("Ok"),
+              child: Text('Ok'),
             )
           ],
         );
       };
 
   static _trimmedText(TextEditingController controller) =>
-      (controller.text ?? "").trim();
+      (controller.text ?? '').trim();
 
   static _getPrice(priceController, multiplierController) {
     var priceAsString = _trimmedText(priceController);

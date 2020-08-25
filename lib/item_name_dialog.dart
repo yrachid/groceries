@@ -25,7 +25,7 @@ class ItemNameDialog {
           );
         });
 
-    var itemName = (nameController.text ?? "").trim();
+    var itemName = (nameController.text ?? '').trim();
     if (itemName.isNotEmpty) {
       onValidInput(itemName);
     }
@@ -33,6 +33,6 @@ class ItemNameDialog {
 
   static FlatButton _okButton(BuildContext context) => FlatButton(
         onPressed: () => Navigator.of(context).pop(true),
-        child: Text("Ok"),
+        child: Text('Ok'),
       );
 }
