@@ -30,7 +30,12 @@ class GroceryEventStore {
     _purchasedGroceries.clear();
   }
 
-  removePurchase(purchase) {
+  restoreItem(PurchasedGrocery purchase) {
+    _purchasedGroceries.remove(purchase);
+    _activeGroceries.add(purchase.name);
+  }
+
+  deletePurchase(purchase) {
     _purchasedGroceries.remove(purchase);
   }
 

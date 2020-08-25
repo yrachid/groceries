@@ -134,12 +134,15 @@ class _GroceryListHome extends State<MyHomePage> {
         itemCount: _groceries.purchasesLength(),
         separatorBuilder: (context, index) => Divider(),
         itemBuilder: (context, index) {
-          final PurchasedGrocery item = _groceries.getPurchase(index);
+          final PurchasedGrocery purchase = _groceries.getPurchase(index);
           return PurchaseListTile.build(
             context: context,
-            item: item,
-            onDismiss: () => setState(() {
-              _groceries.removePurchase(item);
+            item: purchase,
+            onItemRestored: () => setState(() {
+              _groceries.restoreItem(purchase);
+            }),
+            onPurchaseDeleted: () => setState(() {
+              _groceries.deletePurchase(purchase);
             }),
           );
         },
