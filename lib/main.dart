@@ -59,7 +59,7 @@ class _GroceryListHome extends State<MyHomePage> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: ItemNameDialog.show(
+        onPressed: () => ItemNameDialog.show(
             context: context,
             onValidInput: (name) => setState(() {
                   _activeItems.add(name);
