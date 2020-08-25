@@ -24,7 +24,12 @@ class GroceryEventStore {
 
   purchase(String name, double price) {
     _activeGroceries.remove(name);
-    _purchasedGroceries.add(_PurchasedGrocery(name: name, price: price));
+    _purchasedGroceries.add(
+      _PurchasedGrocery(
+        name: name,
+        price: price,
+      ),
+    );
   }
 
   total() {
