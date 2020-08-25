@@ -82,15 +82,19 @@ class _GroceryListHome extends State<MyHomePage> {
                     _groceries.purchase(item, price);
                   }),
               onDismiss: () => setState(() {
-                    _groceries.cancel(index);
+                    _groceries.cancel(item);
                   }));
         },
       );
 
-  Text _totalDisplay() => Text(
+  GestureDetector _totalDisplay() => GestureDetector(
+      onLongPress: () => setState(() {
+            _groceries.clearPurchases();
+          }),
+      child: Text(
         "${_moneyFormat.format(_groceries.total())}",
         textAlign: TextAlign.center,
         style: TextStyle(
             fontSize: 40, fontWeight: FontWeight.bold, color: Colors.green),
-      );
+      ));
 }

@@ -6,8 +6,8 @@ class GroceryEventStore {
     _activeGroceries.add(name);
   }
 
-  cancel(int index) {
-    _activeGroceries.removeAt(index);
+  cancel(String name) {
+    _activeGroceries.remove(name);
   }
 
   get(int index) {
@@ -16,6 +16,10 @@ class GroceryEventStore {
 
   length() {
     return _activeGroceries.length;
+  }
+
+  clearPurchases() {
+    _purchasedGroceries.clear();
   }
 
   purchase(String name, double price) {

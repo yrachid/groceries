@@ -2,8 +2,7 @@
 - [ ] Persist state in a file
 - [ ] Undo purchase registering
 - [ ] Show active item count
-- [ ] Store items that were purchased in a separate list
-- [ ] Reset total
+- [ ] Store purchased items, total and timestamp
 - [X] Make list items dismissible
   - [X] Remove item from list on dismiss
 - [X] Display total cost
@@ -21,3 +20,5 @@
 - [X] Do not parse price from empty input
 - [X] Check whether confirmDismiss logic can be moved into onDismissed
 - [X] Fix price dialog height
+- [X] Reset total
+- [X] Store items that were purchased in a separate list
