@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:groceries/grocery_event_store.dart';
 import 'package:groceries/grocery_list_tile.dart';
 import 'package:groceries/item_name_dialog.dart';
 import 'package:intl/intl.dart';
@@ -34,8 +35,7 @@ class _GroceryListHome extends State<MyHomePage> {
   static final _moneyFormat =
       NumberFormat.currency(locale: "pt_BR", symbol: "R\$");
 
-  var _activeItems = [];
-  var _total = 0.0;
+  final _groceries = GroceryEventStore();
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +62,7 @@ class _GroceryListHome extends State<MyHomePage> {
         onPressed: () => ItemNameDialog.show(
             context: context,
             onValidInput: (name) => setState(() {
-                  _activeItems.add(name);
+                  _groceries.add(name);
                 })),
         tooltip: 'Add item',
         child: Icon(Icons.add),
@@ -71,24 +71,24 @@ class _GroceryListHome extends State<MyHomePage> {
   }
 
   ListView _groceryItemsListView() => ListView.separated(
-        itemCount: _activeItems.length,
+        itemCount: _groceries.length(),
         separatorBuilder: (context, index) => Divider(),
         itemBuilder: (context, index) {
-          final item = _activeItems[index];
+          final item = _groceries.get(index);
           return GroceryListTileBuilder.build(
               context: context,
               item: item,
               onPurchase: (price) => setState(() {
-                    _total += price;
+                    _groceries.purchase(item, price);
                   }),
               onDismiss: () => setState(() {
-                    _activeItems.removeAt(index);
+                    _groceries.cancel(index);
                   }));
         },
       );
 
   Text _totalDisplay() => Text(
-        "${_moneyFormat.format(_total)}",
+        "${_moneyFormat.format(_groceries.total())}",
         textAlign: TextAlign.center,
         style: TextStyle(
             fontSize: 40, fontWeight: FontWeight.bold, color: Colors.green),

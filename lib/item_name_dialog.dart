@@ -8,7 +8,7 @@ class ItemNameDialog {
         builder: (buildContext) {
           return AlertDialog(
             content: Row(children: <Widget>[
-              (Expanded(
+              Expanded(
                 child: TextField(
                   controller: nameController,
                   keyboardType: TextInputType.name,
@@ -17,7 +17,7 @@ class ItemNameDialog {
                     labelText: 'Nome do item',
                   ),
                 ),
-              )),
+              ),
             ]),
             actions: <Widget>[_okButton(context)],
           );
