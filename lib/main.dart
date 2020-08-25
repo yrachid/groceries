@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:groceries/grocery_event_store.dart';
 import 'package:groceries/grocery_list_tile.dart';
 import 'package:groceries/item_name_dialog.dart';
+import 'package:groceries/purchase_list_tile.dart';
 import 'package:intl/intl.dart';
 
 void main() {
@@ -134,11 +135,12 @@ class _GroceryListHome extends State<MyHomePage> {
         separatorBuilder: (context, index) => Divider(),
         itemBuilder: (context, index) {
           final PurchasedGrocery item = _groceries.getPurchase(index);
-          return GroceryListTileBuilder.build(
+          return PurchaseListTile.build(
             context: context,
-            item: '${item.name} - ${item.price}',
-            onPurchase: () => print("Purchase"),
-            onDismiss: () => print("Dismiss"),
+            item: item,
+            onDismiss: () => setState(() {
+              _groceries.removePurchase(item);
+            }),
           );
         },
       );

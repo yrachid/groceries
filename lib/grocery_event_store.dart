@@ -30,6 +30,10 @@ class GroceryEventStore {
     _purchasedGroceries.clear();
   }
 
+  removePurchase(purchase) {
+    _purchasedGroceries.remove(purchase);
+  }
+
   purchase(String name, double price) {
     _activeGroceries.remove(name);
     _purchasedGroceries.add(
