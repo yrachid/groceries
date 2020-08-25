@@ -53,48 +53,57 @@ class _GroceryListHome extends State<MyHomePage> {
             child: Center(child: _totalDisplay()),
           ),
           Container(
-              width: screenSize.width,
-              height: screenSize.height * 0.5,
-              child: _groceryItemsListView()),
+            width: screenSize.width,
+            height: screenSize.height * 0.5,
+            child: _groceriesListView(),
+          ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => ItemNameDialog.show(
-            context: context,
-            onValidInput: (name) => setState(() {
-                  _groceries.add(name);
-                })),
-        tooltip: 'Add item',
-        child: Icon(Icons.add),
-      ),
+      floatingActionButton: _addItemButton(),
     );
   }
 
-  ListView _groceryItemsListView() => ListView.separated(
+  GestureDetector _totalDisplay() => GestureDetector(
+        onLongPress: () => setState(() {
+          _groceries.clearPurchases();
+        }),
+        child: Text(
+          "${_moneyFormat.format(_groceries.total())}",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 40,
+            fontWeight: FontWeight.bold,
+            color: Colors.green,
+          ),
+        ),
+      );
+
+  ListView _groceriesListView() => ListView.separated(
         itemCount: _groceries.length(),
         separatorBuilder: (context, index) => Divider(),
         itemBuilder: (context, index) {
           final item = _groceries.get(index);
           return GroceryListTileBuilder.build(
-              context: context,
-              item: item,
-              onPurchase: (price) => setState(() {
-                    _groceries.purchase(item, price);
-                  }),
-              onDismiss: () => setState(() {
-                    _groceries.cancel(item);
-                  }));
+            context: context,
+            item: item,
+            onPurchase: (price) => setState(() {
+              _groceries.purchase(item, price);
+            }),
+            onDismiss: () => setState(() {
+              _groceries.cancel(item);
+            }),
+          );
         },
       );
 
-  GestureDetector _totalDisplay() => GestureDetector(
-      onLongPress: () => setState(() {
-            _groceries.clearPurchases();
+  FloatingActionButton _addItemButton() => FloatingActionButton(
+        onPressed: () => ItemNameDialog.show(
+          context: context,
+          onValidInput: (name) => setState(() {
+            _groceries.add(name);
           }),
-      child: Text(
-        "${_moneyFormat.format(_groceries.total())}",
-        textAlign: TextAlign.center,
-        style: TextStyle(
-            fontSize: 40, fontWeight: FontWeight.bold, color: Colors.green),
-      ));
+        ),
+        tooltip: 'Add item',
+        child: Icon(Icons.add),
+      );
 }

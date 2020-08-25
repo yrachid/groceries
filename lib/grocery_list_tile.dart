@@ -40,17 +40,24 @@ class GroceryListTileBuilder {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              Icon(Icons.add_shopping_cart, color: Colors.white),
-              Text(" Carrinho ",
-                  textAlign: TextAlign.right,
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.w700))
+              Icon(
+                Icons.add_shopping_cart,
+                color: Colors.white,
+              ),
+              Text(
+                " Carrinho ",
+                textAlign: TextAlign.right,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w700,
+                ),
+              )
             ],
           )));
 
   static Container _deletionBackground(context) => Container(
-      color: Colors.red,
-      child: Align(
+        color: Colors.red,
+        child: Align(
           alignment: Alignment.centerRight,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -71,5 +78,7 @@ class GroceryListTileBuilder {
                 textAlign: TextAlign.right,
               ),
             ],
-          )));
+          ),
+        ),
+      );
 }

@@ -19,7 +19,9 @@ class ItemNameDialog {
                 ),
               ),
             ]),
-            actions: <Widget>[_okButton(context)],
+            actions: <Widget>[
+              _okButton(context),
+            ],
           );
         });
 

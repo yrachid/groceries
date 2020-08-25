@@ -5,16 +5,19 @@ class PriceDialog {
 
   static show({@required context, @required title}) async {
     final priceController = TextEditingController();
-    final multiplierController =
-        TextEditingController(text: _initialItemMultiplier);
+    final multiplierController = TextEditingController(
+      text: _initialItemMultiplier,
+    );
 
     await showDialog(
+      context: context,
+      builder: _build(
         context: context,
-        builder: _build(
-            context: context,
-            title: title,
-            priceController: priceController,
-            multiplierController: multiplierController));
+        title: title,
+        priceController: priceController,
+        multiplierController: multiplierController,
+      ),
+    );
 
     return _getPrice(priceController, multiplierController);
   }
@@ -28,7 +31,9 @@ class PriceDialog {
               child: TextField(
                 controller: priceController,
                 keyboardType: TextInputType.numberWithOptions(
-                    signed: false, decimal: true),
+                  signed: false,
+                  decimal: true,
+                ),
                 autofocus: true,
                 decoration: new InputDecoration(
                   labelText: 'Preço',
