@@ -5,6 +5,8 @@
   - [ ] With unique identifier
 - [ ] Show active item count
 - [ ] Store purchased items, total and timestamp
+- [ ] Avoid unnecessary file writes
+  - [ ] Write only when grocery store changes
 - [X] Make list items dismissible
   - [X] Remove item from list on dismiss
 - [X] Display total cost
