@@ -27,9 +27,12 @@ class ItemNameDialog {
 
     var itemName = (nameController.text ?? '').trim();
     if (itemName.isNotEmpty) {
-      onValidInput(itemName);
+      onValidInput(_capitalize(itemName));
     }
   }
+
+  static String _capitalize(String value) =>
+      value.substring(0, 1).toUpperCase() + value.substring(1);
 
   static FlatButton _okButton(BuildContext context) => FlatButton(
         onPressed: () => Navigator.of(context).pop(true),
