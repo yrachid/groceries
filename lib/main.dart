@@ -16,12 +16,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'The Elder Scrolls: Zaffari',
+      title: 'Lista de compras',
       theme: ThemeData(
         primarySwatch: Colors.green,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'The Elder Scrolls: Zaffari'),
+      home: MyHomePage(title: 'Lista de compras'),
     );
   }
 }
