@@ -23,6 +23,7 @@ class GroceryEventStore {
 
   add(String name) {
     _activeGroceries.add(name);
+    _activeGroceries.sort();
   }
 
   cancel(String name) {
@@ -51,7 +52,7 @@ class GroceryEventStore {
 
   restoreItem(PurchasedGrocery purchase) {
     _purchasedGroceries.remove(purchase);
-    _activeGroceries.add(purchase.name);
+    add(purchase.name);
   }
 
   deletePurchase(purchase) {
