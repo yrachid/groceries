@@ -5,6 +5,8 @@ import 'package:groceries/item_name_dialog.dart';
 import 'package:groceries/purchase_list_tile.dart';
 import 'package:groceries/storage.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'dart:developer' as dev;
 
 void main() {
   runApp(MyApp());
@@ -97,6 +99,18 @@ class _GroceryListHome extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        actions: [
+          PopupMenuButton(
+              itemBuilder: (_) => <PopupMenuItem<String>>[
+                    new PopupMenuItem<String>(
+                      child: const Text('Whatsapp'),
+                      value: 'Whatsapp',
+                    )
+                  ],
+              onSelected: (item) => {
+                    if (item == 'Whatsapp') {_launchWhatsapp()}
+                  }),
+        ],
       ),
       body: views.elementAt(_activeViewIndex),
       floatingActionButton: _addItemButton(),
@@ -108,15 +122,30 @@ class _GroceryListHome extends State<MyHomePage> {
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.list),
-            title: Text('Lista'),
+            label: 'Lista',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.attach_money),
-            title: Text('Compras'),
+            label: 'Compras',
           ),
         ],
       ),
     );
+  }
+
+  _launchWhatsapp() async {
+    final Uri uri = Uri(
+        scheme: 'whatsapp',
+        host: 'send',
+        queryParameters: {'text': _groceries.toString()});
+
+    dev.log('Whatsapp URI: ${uri.toString()}');
+
+    if (await canLaunch(uri.toString())) {
+      await launch(uri.toString());
+    } else {
+      dev.log('Could not launch URL: ${uri.toString()}');
+    }
   }
 
   GestureDetector _totalDisplay() => GestureDetector(
