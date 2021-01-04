@@ -97,4 +97,7 @@ class PurchasedGrocery {
   final double price;
 
   PurchasedGrocery({this.name, this.price});
+
+  @override
+  String toString() => "$name (R\$$price)";
 }
