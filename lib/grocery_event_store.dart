@@ -88,6 +88,7 @@ class GroceryEventStore {
   @override
   String toString() {
     return _activeGroceries.map((e) => '[ ] - $e').join('\n') +
+        "\n" +
         _purchasedGroceries.map((e) => '[X] - $e').join('\n');
   }
 }
