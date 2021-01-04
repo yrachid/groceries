@@ -5,8 +5,7 @@ import 'package:groceries/item_name_dialog.dart';
 import 'package:groceries/purchase_list_tile.dart';
 import 'package:groceries/storage.dart';
 import 'package:intl/intl.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'dart:developer' as dev;
+import 'package:groceries/whatsapp_sharing.dart' as whatsapp;
 
 void main() {
   runApp(MyApp());
@@ -108,7 +107,7 @@ class _GroceryListHome extends State<MyHomePage> {
                     )
                   ],
               onSelected: (item) => {
-                    if (item == 'Whatsapp') {_launchWhatsapp()}
+                    if (item == 'Whatsapp') {whatsapp.share(_groceries)}
                   }),
         ],
       ),
@@ -131,21 +130,6 @@ class _GroceryListHome extends State<MyHomePage> {
         ],
       ),
     );
-  }
-
-  _launchWhatsapp() async {
-    final Uri uri = Uri(
-        scheme: 'whatsapp',
-        host: 'send',
-        queryParameters: {'text': _groceries.toString()});
-
-    dev.log('Whatsapp URI: ${uri.toString()}');
-
-    if (await canLaunch(uri.toString())) {
-      await launch(uri.toString());
-    } else {
-      dev.log('Could not launch URL: ${uri.toString()}');
-    }
   }
 
   GestureDetector _totalDisplay() => GestureDetector(

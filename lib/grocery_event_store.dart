@@ -21,6 +21,10 @@ class GroceryEventStore {
           ))
       .toList();
 
+  List<String> pendingItems() => _activeGroceries;
+
+  List<PurchasedGrocery> purchasedItems() => _purchasedGroceries;
+
   add(String name) {
     _activeGroceries.add(name);
     _activeGroceries.sort();
@@ -84,13 +88,6 @@ class GroceryEventStore {
                 })
             .toList(),
       };
-
-  @override
-  String toString() {
-    return _activeGroceries.map((e) => '[ ] - $e').join('\n') +
-        "\n" +
-        _purchasedGroceries.map((e) => '[X] - $e').join('\n');
-  }
 }
 
 class PurchasedGrocery {
