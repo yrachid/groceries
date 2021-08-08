@@ -52,7 +52,7 @@ class PriceDialog {
             ),
           ]),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               onPressed: () => Navigator.of(context).pop(true),
               child: Text('Ok'),
             )
