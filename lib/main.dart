@@ -11,13 +11,30 @@ void main() {
   runApp(MyApp());
 }
 
+const MaterialColor deepOrange = MaterialColor(
+  0xFFFF9E80,
+  <int, Color>{
+    50: Color(0xFFFBE9E7),
+    100: Color(0xFFFFD0B0),
+    200: Color(0xFFFFD0B0),
+    300: Color(0xFFFFD0B0),
+    400: Color(0xFFFF9E80),
+    500: Color(0xFFFF9E80),
+    600: Color(0xFFFF9E80),
+    700: Color(0xFFFF9E80),
+    800: Color(0xFFFF9E80),
+    900: Color(0xFFFF9E80),
+  },
+);
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Lista de compras',
       theme: ThemeData(
-        primarySwatch: Colors.green,
+        primarySwatch: deepOrange,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: MyHomePage(title: 'Lista de compras'),
@@ -142,7 +159,7 @@ class _GroceryListHome extends State<MyHomePage> {
           style: TextStyle(
             fontSize: 40,
             fontWeight: FontWeight.bold,
-            color: Colors.green,
+            color: deepOrange,
           ),
         ),
       );
