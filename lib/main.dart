@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:groceries/grocery_event_store.dart';
 import 'package:groceries/grocery_list_tile.dart';
-import 'package:groceries/item_name_dialog.dart';
 import 'package:groceries/purchase_list_tile.dart';
 import 'package:groceries/storage.dart';
 import 'package:intl/intl.dart';
@@ -55,6 +55,8 @@ class _GroceryListHome extends State<MyHomePage> {
   static final _moneyFormat =
       NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
 
+  var _itemController = TextEditingController();
+
   GroceryEventStore _groceries = GroceryEventStore();
   int _activeViewIndex = 0;
 
@@ -83,14 +85,28 @@ class _GroceryListHome extends State<MyHomePage> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           Container(
+            width: screenSize.width * 0.8,
+            height: screenSize.height * 0.1,
+            child: Center(
+              child: TextField(
+                onSubmitted: _addItem,
+                keyboardType: TextInputType.name,
+                controller: _itemController,
+                decoration: new InputDecoration(
+                  hintText: "Adicionar Item",
+                ),
+              ),
+            ),
+          ),
+          Container(
             width: screenSize.width,
-            height: screenSize.height * 0.3,
+            height: screenSize.height * 0.2,
             child: Center(
               child: _totalDisplay(),
             ),
           ),
           Container(
-            width: screenSize.width,
+            width: screenSize.width * 0.9,
             height: screenSize.height * 0.5,
             child: _activeGroceriesListView(),
           ),
@@ -129,7 +145,6 @@ class _GroceryListHome extends State<MyHomePage> {
         ],
       ),
       body: views.elementAt(_activeViewIndex),
-      floatingActionButton: _addItemButton(),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _activeViewIndex,
         onTap: (index) => setState(() {
@@ -200,14 +215,13 @@ class _GroceryListHome extends State<MyHomePage> {
         },
       );
 
-  FloatingActionButton _addItemButton() => FloatingActionButton(
-        onPressed: () => ItemNameDialog.show(
-          context: context,
-          onValidInput: (name) => setState(() {
-            _groceries.add(name);
-          }),
-        ),
-        tooltip: 'Add item',
-        child: Icon(Icons.add),
-      );
+  void _addItem(String text) {
+    if (_itemController.text.isNotEmpty) {
+      _groceries.add(_capitalize(_itemController.text));
+    }
+    _itemController.clear();
+  }
+
+  static String _capitalize(String value) =>
+      value.substring(0, 1).toUpperCase() + value.substring(1);
 }
