@@ -1,7 +1,8 @@
-import 'package:groceries/grocery_event_store.dart';
-import 'package:url_launcher/url_launcher.dart' as urlLauncher;
 import 'dart:developer' as dev;
+
+import 'package:groceries/grocery_event_store.dart';
 import 'package:intl/intl.dart' as intl;
+import 'package:url_launcher/url_launcher.dart' as urlLauncher;
 
 share(GroceryEventStore groceries) async {
   final Uri uri = Uri(
@@ -19,20 +20,40 @@ share(GroceryEventStore groceries) async {
 }
 
 String _format(GroceryEventStore groceries) => [
-      "*Lista de compras* - ${_todayAsString()}\n",
-      "*Pendentes:*",
-      groceries.pendingItems().map((i) => "[  ] - $i").join("\n") + "\n",
-      "*Comprados:*",
-      groceries
-          .purchasedItems()
-          .map((i) => "[X] - ${i.name} (${_formatPrice(i.price)})")
-          .join("\n") + "\n",
-      _formatTotal(groceries.total())
+      "*Lista de compras* - ${_todayAsString()}",
+      _formatPendingItems(groceries),
+      _formatPurchasedItems(groceries)
     ].join("\n");
+
+String _formatPendingItems(GroceryEventStore groceries) {
+  return groceries.pendingItems().isEmpty
+      ? ""
+      : """
+
+*Pendentes:*
+
+${groceries.pendingItems().map(_formatPending).join("\n")}
+    """;
+}
+
+String _formatPurchasedItems(GroceryEventStore groceries) {
+  return (groceries.purchasedItems().isEmpty)
+      ? ""
+      : """
+
+*Comprados:*
+
+${groceries.purchasedItems().map(_formatPurchase).join("\n")}
+
+*Total:* ${_formatPrice(groceries.total())}
+      """;
+}
 
 _todayAsString() => new intl.DateFormat("dd/MM/yyyy").format(DateTime.now());
 
-_formatTotal(double total) => total > 0 ? "Total: ${_formatPrice(total)}" : "";
+_formatPending(p) => "[ ] - $p";
+
+_formatPurchase(p) => "[X] - ${p.name} (${_formatPrice(p.price)})";
 
 _formatPrice(double price) =>
     intl.NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$').format(price);
