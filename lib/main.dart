@@ -11,7 +11,7 @@ void main() {
   runApp(MyApp());
 }
 
-const MaterialColor deepOrange = MaterialColor(
+const MaterialColor macondoOrange = MaterialColor(
   0xFFFF9E80,
   <int, Color>{
     50: Color(0xFFFBE9E7),
@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Lista de compras',
       theme: ThemeData(
-        primarySwatch: deepOrange,
+        primarySwatch: macondoOrange,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: MyHomePage(title: 'Lista de compras'),
@@ -159,7 +159,7 @@ class _GroceryListHome extends State<MyHomePage> {
           style: TextStyle(
             fontSize: 40,
             fontWeight: FontWeight.bold,
-            color: deepOrange,
+            color: macondoOrange,
           ),
         ),
       );
